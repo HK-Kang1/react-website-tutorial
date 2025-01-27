@@ -1,66 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 
-function MyComponent(){
+function MyComponent() {
+    const [foods, setFoods] = useState(["Apple", "Orange", "Banana"]);
 
-    const [name, setName] = useState("Guest");
-    const [quantity, setQuantity] = useState(1);
-    const [comment, setComment] = useState("");
-    const [payment, setPayment] = useState("");
-    const [shipping, setShipping] = useState("Delivery");
+    function handleAddFood(){
+        
+        const newFood = document.getElementById("foodInput").value;
+        document.getElementById("foodInput").value = "";
 
-    function handleNameChange(e){
-        setName(e.target.value);
-
-    } 
-
-    function handleQuantityChange(e){
-        setQuantity(e.target.value);
+        setFoods(f => [...f, newFood]);
     }
 
-    function handleCommentChange(e){
-        setComment(e.target.value);
+    function handleRemoveFood(index){
+        
+        setFoods(foods.filter((_, i) => i !== index));
     }
 
-    function handlePaymentChange(e) {
-        setPayment(e.target.value);
-    }
-
-    function handleShippingChange(e) {
-        setShipping(e.target.value);
-    }
-
-    return (<div>
-        <input value={name} onChange={handleNameChange}></input>
-        <p>Name: {name}</p>
-
-        <input value={quantity} onChange={handleQuantityChange} type="number"></input>
-        <p>Quantity: {quantity}</p>
-
-        <textarea value={comment} onChange={handleCommentChange} placeholder="Enter delivery instructions"></textarea>
-        <p>Comment: {comment}</p>
-
-        <select value={payment} onChange={handlePaymentChange}>
-            <option value="">Select an option</option>
-            <option value="visa">visa</option>
-            <option value="mastercard">mastercard</option>
-            <option value="giftcard">giftcard</option>
-
-        </select>
-        <p>Payment: {payment}</p>
-
-        <label>
-            <input type="radio" value="Pick up" checked={shipping == "Pick up"} onChange={handleShippingChange}></input>
-            Pick up
-        </label> <br></br>
-
-        <label>
-        <input type="radio" value="Delivery" checked={shipping == "Delivery"} onChange={handleShippingChange}></input>
-            Delivery
-        </label>
-
-        <p>Shipping: {shipping}</p>
-
-    </div>);
+    return(
+        <div>
+            <h2>List of Food</h2>
+            <ul>
+                {foods.map((food, index) => 
+                    <li key={index} onClick={() => handleRemoveFood(index)}>
+                    {food}
+                    </li>)}
+            </ul>
+            <input type="text" id="foodInput" placeholder='Enter food name'></input>
+            <button onClick={handleAddFood}>Add Food</button>
+        </div>);
 }
 
 export default MyComponent
